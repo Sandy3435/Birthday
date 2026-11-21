@@ -79,6 +79,7 @@ function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
 export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
   const mem = item;
   const cardRef = useRef<THREE.Group>(null);
+  const photoMeshRef = useRef<THREE.Mesh>(null);
   const [flipped, setFlipped] = useState(false);
   const flipTarget = useRef(0);
   const tilt = useRef({ x: 0, y: 0 });
@@ -89,6 +90,25 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
 
   const photoTex = useTexture(mem.image);
   const backTex = useMemo(() => makeBackTexture(mem.message, mem.id), [mem.message, mem.id]);
+
+  useEffect(() => {
+    const img = photoTex.image as { width: number; height: number } | undefined;
+    if (!img || !img.width || !img.height || !photoMeshRef.current) return;
+    const aspect = img.width / img.height;
+    const boxW = 1.2;
+    const boxH = 1.6;
+    const boxAspect = boxW / boxH;
+    let sx = 1;
+    let sy = 1;
+    if (aspect > boxAspect) {
+      sx = 1;
+      sy = boxAspect / aspect;
+    } else {
+      sy = 1;
+      sx = aspect / boxAspect;
+    }
+    photoMeshRef.current.scale.set(sx, sy, 1);
+  }, [photoTex]);
 
   const initRot = ((mem.photoRotation ?? 0) * Math.PI) / 180;
 
@@ -195,7 +215,7 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
           <meshStandardMaterial color="#FFFFFF" roughness={0.9} />
         </mesh>
         {/* front photo */}
-        <mesh position={[0, 0, 0.006]} onClick={handleClick}>
+        <mesh ref={photoMeshRef} position={[0, 0, 0.006]} onClick={handleClick}>
           <planeGeometry args={[photoW, photoH]} />
           <meshBasicMaterial map={photoTex} side={THREE.FrontSide} />
         </mesh>
