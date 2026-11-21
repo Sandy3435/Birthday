@@ -7,7 +7,7 @@ import { useStore } from './store';
 
 export default function App() {
   const scroll = useStore((s) => s.scroll);
-  const sceneVisible = scroll > 0.015;
+  const sceneVisible = scroll > 0.06;
 
   // Manual raycast from a transparent HTML layer. This is more reliable than
   // relying on R3F's pointer events across resizes, touch and scroll.
@@ -82,10 +82,8 @@ export default function App() {
         aria-hidden="true"
       />
 
-      {/* Standalone line that appears just before the first picture. */}
-      <div className={`intro-line ${scroll > 0.003 && scroll < 0.03 ? 'show' : ''}`}>
-        I appreciate and love...
-      </div>
+      {/* Standalone line, a scroll section just before the first picture. */}
+      <div className="intro-line">I appreciate and love...</div>
 
       <div className="scroll-spacer" aria-hidden="true" style={{ height: `${SCROLL_PAGES * 100}vh`, pointerEvents: 'none' }} />
       <Overlay />

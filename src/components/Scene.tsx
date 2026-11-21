@@ -36,7 +36,10 @@ function ScrollRig({ reducedMotion }: { reducedMotion: boolean }) {
   }, [setScroll]);
 
   useFrame(() => {
-    const o = scroll;
+    // The 3D world begins after the hero + intro sections.
+    const SCENE_START = 0.06;
+    const SCENE_END = 0.96;
+    const o = Math.min(1, Math.max(0, (scroll - SCENE_START) / (SCENE_END - SCENE_START)));
     const aspect = (camera as THREE.PerspectiveCamera).aspect || 1;
     const narrow = aspect < 1;
     const baseZ = narrow ? 11 : 6.5;
