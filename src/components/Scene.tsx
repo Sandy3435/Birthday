@@ -1,6 +1,5 @@
 import { Suspense, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Environment } from '@react-three/drei';
 import * as THREE from 'three';
 import MemoryItem from './MemoryItem';
 import { useStore } from '../store';
@@ -46,7 +45,6 @@ export default function Scene() {
       <ambientLight intensity={0.7} />
       <directionalLight position={[5, 8, 6]} intensity={0.9} />
       <directionalLight position={[-4, 6, -3]} intensity={0.35} color="#F5F0E8" />
-      <Environment preset="studio" />
       {appreciationItems.map((_, i) => (
         <MemoryItem key={i} index={i} reducedMotion={reducedMotion} />
       ))}
