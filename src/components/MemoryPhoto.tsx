@@ -159,24 +159,6 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
     }
   };
 
-  const handlePointerOver = (e: any) => {
-    e.stopPropagation();
-    hover.current = true;
-  };
-  const handlePointerOut = (e: any) => {
-    e.stopPropagation();
-    hover.current = false;
-    tilt.current.x = 0;
-    tilt.current.y = 0;
-  };
-  const handlePointerMove = (e: any) => {
-    if (!e.point) return;
-    const dx = e.point.x - position[0];
-    const dy = e.point.y - position[1];
-    tilt.current.y = dx * 0.12;
-    tilt.current.x = -dy * 0.12;
-  };
-
   const frameW = 1.35;
   const frameH = 1.78;
   const photoW = 1.2;
@@ -184,18 +166,6 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
 
   return (
     <group position={position}>
-      {/* invisible hit area for reliable clicking */}
-      <mesh
-        onClick={handleClick}
-        onPointerOver={handlePointerOver}
-        onPointerOut={handlePointerOut}
-        onPointerMove={handlePointerMove}
-        visible={true}
-      >
-        <planeGeometry args={[frameW, frameH]} />
-        <meshBasicMaterial transparent opacity={0} />
-      </mesh>
-
       <group ref={cardRef}>
         {/* back frame */}
         <mesh position={[0, 0, -0.008]} rotation={[0, Math.PI, 0]}>
