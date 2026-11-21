@@ -7,6 +7,18 @@ import { appreciationItems } from '../data/appreciations';
 import { CAMERA_START_Y, CAMERA_END_Y } from '../lib/layout';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
+export const sceneBridge: {
+  scene: THREE.Scene | null;
+  camera: THREE.Camera | null;
+} = { scene: null, camera: null };
+
+function SceneBridge() {
+  const { scene, camera } = useThree();
+  sceneBridge.scene = scene;
+  sceneBridge.camera = camera;
+  return null;
+}
+
 function ScrollRig({ reducedMotion }: { reducedMotion: boolean }) {
   const { camera } = useThree();
   const setScroll = useStore((s) => s.setScroll);
@@ -42,14 +54,17 @@ function ScrollRig({ reducedMotion }: { reducedMotion: boolean }) {
 export default function Scene() {
   const reducedMotion = useReducedMotion();
   return (
-    <Suspense fallback={null}>
-      <ambientLight intensity={0.7} />
+    <>
+      <SceneBridge />
+      <Suspense fallback={null}>
+        <ambientLight intensity={0.7} />
       <directionalLight position={[5, 8, 6]} intensity={0.9} />
       <directionalLight position={[-4, 6, -3]} intensity={0.35} color="#F5F0E8" />
       {appreciationItems.map((_, i) => (
         <MemoryItem key={i} index={i} reducedMotion={reducedMotion} />
       ))}
       <ScrollRig reducedMotion={reducedMotion} />
-    </Suspense>
+      </Suspense>
+    </>
   );
 }

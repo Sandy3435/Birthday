@@ -1,9 +1,38 @@
 import { Canvas } from '@react-three/fiber';
-import Scene from './components/Scene';
+import * as THREE from 'three';
+import Scene, { sceneBridge } from './components/Scene';
 import Overlay from './components/Overlay';
 import { SCROLL_PAGES } from './lib/layout';
+import { useStore } from './store';
 
 export default function App() {
+  // Manual raycast from a transparent HTML layer. This is more reliable than
+  // relying on R3F's pointer events across resizes, touch and scroll.
+  const handleSceneClick = (e: any) => {
+    const { scene, camera } = sceneBridge;
+    if (!scene || !camera) return;
+
+    const ndc = new THREE.Vector2(
+      (e.clientX / window.innerWidth) * 2 - 1,
+      -(e.clientY / window.innerHeight) * 2 + 1
+    );
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(ndc, camera);
+    const hits = raycaster.intersectObjects(scene.children, true);
+
+    for (const h of hits) {
+      let obj: THREE.Object3D | null = h.object;
+      while (obj) {
+        const id = obj.userData?.photoId;
+        if (typeof id === 'number') {
+          useStore.getState().toggleFlip(id);
+          return;
+        }
+        obj = obj.parent;
+      }
+    }
+  };
+
   return (
     <div className="app">
       <div className="bg-text" aria-hidden="true">
@@ -30,6 +59,19 @@ export default function App() {
           <Scene />
         </Canvas>
       </div>
+      {/* Transparent interaction layer: captures taps/clicks and raycasts manually. */}
+      <div
+        onClick={handleSceneClick}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 1,
+          pointerEvents: 'auto',
+          touchAction: 'pan-y',
+          cursor: 'pointer',
+        }}
+        aria-hidden="true"
+      />
       <div className="scroll-spacer" aria-hidden="true" style={{ height: `${SCROLL_PAGES * 100}vh`, pointerEvents: 'none' }} />
       <Overlay />
     </div>

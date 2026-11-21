@@ -1,4 +1,4 @@
-import { useRef, useMemo, useState } from 'react';
+import { useRef, useMemo, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import confetti from 'canvas-confetti';
@@ -26,17 +26,11 @@ export default function MemoryItem({ index, reducedMotion }: Props) {
   const groupRef = useRef<THREE.Group>(null);
   const seed = item.animationSeed ?? index * 0.37;
 
-  // base position for floating animation (and drag)
-  const basePos = useRef<[number, number, number]>([...balloonPos] as [number, number, number]);
+  const flipped = useStore((s) => s.flipped.has(item.id));
+  const opened = useStore((s) => s.opened);
+  const open = useStore((s) => s.open);
 
-  const [flipped, setFlipped] = useState(false);
-  const flippedRef = useRef(false);
-
-  const lastTap = useRef(0);
-  const ignoreClick = useRef(false);
-  const dragging = useRef(false);
-
-  const { camera, gl } = useThree();
+  const { camera } = useThree();
 
   const stringPoints = useMemo(() => {
     const pts: [number, number, number][] = [];
@@ -76,118 +70,33 @@ export default function MemoryItem({ index, reducedMotion }: Props) {
     });
   };
 
-  // Single click / tap flips immediately.
-  const handleClick = (e: any) => {
-    e.stopPropagation();
-    if (dragging.current || ignoreClick.current) return;
-
-    const next = !flippedRef.current;
-    flippedRef.current = next;
-    setFlipped(next);
-
-    if (next) {
-      const st = useStore.getState();
-      if (!st.opened.has(item.id)) {
-        st.open(item.id);
-        if (!reducedMotion) fireConfetti();
-      }
+  useEffect(() => {
+    if (!flipped) return;
+    if (!opened.has(item.id)) {
+      open(item.id);
+      if (!reducedMotion) fireConfetti();
     }
-  };
-
-  const startDrag = (e: any) => {
-    if (!groupRef.current) return;
-
-    const plane = new THREE.Plane();
-    const worldPos = new THREE.Vector3();
-    groupRef.current.getWorldPosition(worldPos);
-    const normal = new THREE.Vector3();
-    camera.getWorldDirection(normal);
-    plane.setFromNormalAndCoplanarPoint(normal, worldPos);
-
-    const start = new THREE.Vector3();
-    if (!e.ray.intersectPlane(plane, start)) {
-      ignoreClick.current = false;
-      return;
-    }
-
-    const origin = groupRef.current.position.clone();
-    dragging.current = true;
-
-    const move = (ev: PointerEvent) => {
-      if (!dragging.current || !groupRef.current) return;
-      const rect = gl.domElement.getBoundingClientRect();
-      const ndc = new THREE.Vector2(
-        ((ev.clientX - rect.left) / rect.width) * 2 - 1,
-        -((ev.clientY - rect.top) / rect.height) * 2 + 1
-      );
-      const rc = new THREE.Raycaster();
-      rc.setFromCamera(ndc, camera);
-      const hit = new THREE.Vector3();
-      if (rc.ray.intersectPlane(plane, hit)) {
-        const delta = hit.clone().sub(start);
-        const nx = origin.x + delta.x;
-        const ny = origin.y + delta.y;
-        const nz = origin.z + delta.z;
-        groupRef.current.position.set(nx, ny, nz);
-        basePos.current = [nx, ny, nz];
-      }
-    };
-
-    const up = () => {
-      dragging.current = false;
-      window.removeEventListener('pointermove', move);
-      window.removeEventListener('pointerup', up);
-      window.removeEventListener('pointercancel', up);
-      window.setTimeout(() => {
-        ignoreClick.current = false;
-      }, 0);
-    };
-
-    window.addEventListener('pointermove', move);
-    window.addEventListener('pointerup', up);
-    window.addEventListener('pointercancel', up);
-  };
-
-  const handlePointerDown = (e: any) => {
-    if (e.button !== undefined && e.button !== 0) return;
-    const now = performance.now();
-    if (now - lastTap.current < 320) {
-      // double tap + hold -> drag the balloon and its photo
-      ignoreClick.current = true;
-      startDrag(e);
-    } else {
-      lastTap.current = now;
-    }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flipped]);
 
   useFrame((state) => {
     if (!groupRef.current) return;
-    if (dragging.current) return;
-
     const t = state.clock.elapsedTime;
-    groupRef.current.position.x = basePos.current[0];
-    groupRef.current.position.z = basePos.current[2];
-    groupRef.current.position.y = basePos.current[1] + Math.sin(t * 0.8 + seed * 6) * 0.12;
-    groupRef.current.rotation.z = Math.sin(t * 0.6 + seed * 4) * 0.06;
-    groupRef.current.rotation.x = Math.sin(t * 0.45 + seed * 2) * 0.03;
+    groupRef.current.position.y =
+      balloonPos[1] + (reducedMotion ? 0 : Math.sin(t * 0.8 + seed * 6) * 0.12);
+    groupRef.current.rotation.z = reducedMotion ? 0 : Math.sin(t * 0.6 + seed * 4) * 0.06;
+    groupRef.current.rotation.x = reducedMotion ? 0 : Math.sin(t * 0.45 + seed * 2) * 0.03;
   });
 
   return (
-    <group ref={groupRef} position={balloonPos}>
-      <Balloon
-        size={item.balloonSize ?? 1}
-        seed={seed}
-        onPointerDown={handlePointerDown}
-        onClick={handleClick}
-      />
+    <group ref={groupRef} position={balloonPos} userData={{ photoId: item.id }}>
+      <Balloon size={item.balloonSize ?? 1} seed={seed} />
       <BalloonString points={stringPoints} />
       <MemoryPhoto
         item={item}
         reducedMotion={reducedMotion}
         position={cardRel}
         flipped={flipped}
-        onPointerDown={handlePointerDown}
-        onClick={handleClick}
       />
     </group>
   );

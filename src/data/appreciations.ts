@@ -13,7 +13,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 1,
     image: "/photos/01.webp",
-    message: "Appreciation message 01",
+    message: "The way you notice the tiniest things that the rest of us would happily pretend don't exist is actually insane. And then you fix them. Because apparently, \"it's good enough\" is not a language you speak. I appreciate the excellence you bring to everything, even the little things most people wouldn't notice.",
     position: { x: -0.821, y: 9.0, z: 0.627 },
     balloonSize: 0.95,
     photoRotation: 0.0,
@@ -22,7 +22,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 2,
     image: "/photos/02.webp",
-    message: "Appreciation message 02",
+    message: "I don't think I've ever spent substantial time with you and left feeling uninspired. And it's not just me. You can literally see it in the people around you. Somehow, you make people want to do better, think bigger, and become more. That's a pretty special thing, and I really appreciate that.",
     position: { x: 0.359, y: 7.5, z: 0.699 },
     balloonSize: 1.07,
     photoRotation: 0.0,
@@ -31,7 +31,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 3,
     image: "/photos/03.webp",
-    message: "Appreciation message 03",
+    message: "You are so committed to your standards, sometimes I want to ask if we can just relax for five minutes. 😅 But honestly, I really appreciate it. You remind me that values aren't really values if we abandon them the moment they become inconvenient. I appreciate that you don't just talk about the things you believe in; you actually stand by them and could die by them.",
     position: { x: -0.884, y: 6.0, z: -0.662 },
     balloonSize: 1.03,
     photoRotation: 0.0,
@@ -40,7 +40,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 4,
     image: "/photos/04.webp",
-    message: "Appreciation message 04",
+    message: "I love when you randomly decide to play (both types of play, lol) because sometimes the jokes are so unexpected, so weird, so off-key that I genuinely need a minute. It's nice knowing that underneath all the seriousness, there is, in fact, a very unserious human being. 😂",
     position: { x: 0.779, y: 4.5, z: 0.398 },
     balloonSize: 0.99,
     photoRotation: 0.0,
@@ -58,7 +58,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 6,
     image: "/photos/06.webp",
-    message: "Appreciation message 06",
+    message: "Watching you learn video editing was actually crazy. You went from learning it to doing it so well so quickly. I feel like if you woke up tomorrow and decided to learn underwater basket weaving, I'd just have to give you a few weeks and wait for the results. I love how you approach something new, put in the work, and actually get good at it. I appreciate your love for the process of learning.",
     position: { x: 1.359, y: 1.5, z: 0.785 },
     balloonSize: 1.07,
     photoRotation: 0.0,
@@ -67,7 +67,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 7,
     image: "/photos/07.webp",
-    message: "Appreciation message 07",
+    message: "I really appreciate your patience with people. Because let's be honest, not everyone is operating at your speed or your standards sometimes. But you still make room for us to learn, make mistakes, and grow. I appreciate that you don't expect us to magically know everything. You give people room to figure things out, and that means a lot.",
     position: { x: -0.319, y: 0.0, z: -0.338 },
     balloonSize: 1.03,
     photoRotation: 0.0,
@@ -76,7 +76,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 8,
     image: "/photos/08.webp",
-    message: "Appreciation message 08",
+    message: "You could easily make people feel like they have so much catching up to do, but instead, you meet them where they are and help them grow without making them feel small. I appreciate that you don't use what you know to make others feel less. You make people feel like they can rise.",
     position: { x: 1.299, y: -1.5, z: 0.643 },
     balloonSize: 0.99,
     photoRotation: 0.0,
@@ -85,7 +85,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 9,
     image: "/photos/09.webp",
-    message: "Appreciation message 09",
+    message: "Your time, your energy, your resources, your whole self — you give so much to people and to this mission. I genuinely admire how much of yourself you pour into others. I hope you also remember to pour some of that generosity back into yourself cause you deserve ittttt.",
     position: { x: 0.139, y: -3.0, z: 0.74 },
     balloonSize: 0.95,
     photoRotation: 0.0,
@@ -94,7 +94,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 10,
     image: "/photos/10.webp",
-    message: "Appreciation message 10",
+    message: "I love that you don't just want to see the mission succeed; you genuinely want to see the people around you do meaningful things with their lives, too. Even when you're too busy to post about every win, I see how much you sincerely celebrate people's growth. I think that's beautiful.",
     position: { x: 1.617, y: -4.5, z: 0.057 },
     balloonSize: 1.07,
     photoRotation: 0.0,
@@ -103,7 +103,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 11,
     image: "/photos/11.webp",
-    message: "Appreciation message 11",
+    message: "I won't lie, sometimes the call-outs are painful. Like, can we not? 😭 But then I go away, think about it, and realize there's actually something to learn. I appreciate that you care enough to challenge us instead of just letting us get comfortable. Even when it's uncomfortable, you make me think.",
     position: { x: -0.092, y: -6.0, z: 0.029 },
     balloonSize: 1.03,
     photoRotation: 0.0,
@@ -112,7 +112,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 12,
     image: "/photos/12.webp",
-    message: "Appreciation message 12",
+    message: "I really enjoy how your mind works. There's always an insight, a perspective, or some connection I hadn't thought about before. Sometimes I'm just listening and thinking, okay, where did you even get that from? It's refreshing to be around a mind like yours. I hope you never run out of things to teach me.",
     position: { x: -1.492, y: -7.5, z: -0.735 },
     balloonSize: 0.99,
     photoRotation: 0.0,
@@ -121,7 +121,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 13,
     image: "/photos/13.webp",
-    message: "Appreciation message 13",
+    message: "There are moments when everything looks like it's falling apart and the rest of us are mentally preparing for the funeral. And then there's you, somehow showing up calm, still believing things can turn around. I appreciate that you don't let difficult seasons convince you that the story is over.",
     position: { x: 0.941, y: -9.0, z: 0.518 },
     balloonSize: 0.95,
     photoRotation: 0.0,
@@ -130,7 +130,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 14,
     image: "/photos/14.webp",
-    message: "Appreciation message 14",
+    message: "I genuinely don't think I've witnessed this level of resilience before. You take hits, face setbacks, deal with things that would make most people throw in the towel, and somehow you keep getting back up. Watching you fight has taught me a lot about what it means to persevere. I really admire that about you.",
     position: { x: -0.303, y: -10.5, z: -0.584 },
     balloonSize: 1.07,
     photoRotation: 0.0,
@@ -139,7 +139,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 15,
     image: "/photos/15.webp",
-    message: "Appreciation message 15",
+    message: "I appreciate how confidently you carry yourself and how much you believe in what you're capable of. It's contagious. Being around you makes me question why I was ever doubting myself in the first place. Sometimes you just need to watch someone walk into a room like they belong there.",
     position: { x: -1.567, y: -12.0, z: 0.424 },
     balloonSize: 1.03,
     photoRotation: 0.0,
@@ -148,7 +148,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 16,
     image: "/photos/16.webp",
-    message: "Appreciation message 16",
+    message: "I appreciate your swagger. You're actually a fine boy. 😊✨ And I appreciate that you put effort into how you present yourself. The way you dress, carry yourself, the little details… there's a certain consciousness in your swagger that I really like. I don't know how else to explain it, but sometimes you just look SO good, and it genuinely makes me happy.",
     position: { x: 0.108, y: -13.5, z: -0.503 },
     balloonSize: 0.99,
     photoRotation: 0.0,
@@ -157,7 +157,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 17,
     image: "/photos/17.webp",
-    message: "Appreciation message 17",
+    message: "I love that even when we're not quite where we're trying to get to, you don't make the present feel like a failure. You still find ways to make us appreciate where we are, celebrate the little wins, and actually enjoy the moment. You're always pushing us towards something bigger, but you also remind us that there's something worth being happy about right here. I really appreciate that.",
     position: { x: 1.269, y: -15.0, z: 0.267 },
     balloonSize: 0.95,
     photoRotation: 0.0,
@@ -166,7 +166,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 18,
     image: "/photos/18.webp",
-    message: "Appreciation message 18",
+    message: "One thing I find so beautiful about you is that when you dream, you don't just dream for yourself. You make room for other people in that vision. The way you say things like, \"the version of you that I see...\" Honestly, there's something so special about knowing that someone sees a future for you, sometimes even before you fully see it for yourself. Thank you for making your dreams big enough to include the rest of us.",
     position: { x: 0.134, y: -16.5, z: 0.798 },
     balloonSize: 1.07,
     photoRotation: 0.0,
@@ -175,7 +175,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 19,
     image: "/photos/19.webp",
-    message: "Appreciation message 19",
+    message: "I want you to know that I see how intentional you've become about your walk with God. I remember when you were trying to find a church that felt right for you, and seeing where you are now makes me happy. I love how seriously you take it, and how intentional you are about making sure God isn't just someone we talk about, but is actually at the centre of what we're building. I see it, and I appreciate it.",
     position: { x: 1.136, y: -18.0, z: -0.129 },
     balloonSize: 1.03,
     photoRotation: 0.0,
@@ -184,7 +184,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 20,
     image: "/photos/20.webp",
-    message: "Appreciation message 20",
+    message: "Man, you really just love people. 😭❤️ I love how you can meet someone and somehow find something good in them, something worth celebrating, something worth bringing out. You have this way of making people feel special and seen, like they matter. And I think it's beautiful that you don't just look at people for who they are right now, but also for all the good you believe is in them. I really admire that about you.",
     position: { x: -0.472, y: -19.5, z: -0.581 },
     balloonSize: 0.99,
     photoRotation: 0.0,
@@ -202,7 +202,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 22,
     image: "/photos/22.webp",
-    message: "Appreciation message 22",
+    message: "I appreciate your little exclamations. I don't really know how to explain this one, but your exclamations when something happens genuinely crack me up. The way you react when you're surprised or caught off guard is just SO funny (lol, I tried to spell the exclamation but you know what I mean). Sometimes it's not even what happened, it's your reaction to it. I don't know why it gets me every time. 😅",
     position: { x: 0.136, y: -22.5, z: -0.275 },
     balloonSize: 1.07,
     photoRotation: 0.0,
@@ -211,7 +211,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 23,
     image: "/photos/23.webp",
-    message: "Appreciation message 23",
+    message: "I love how fiercely you show up for the people you care about. The Peacely situation with her grade really reminded me of this. I saw how much you wanted to help, how deeply you cared about making things better. And I've seen it in other situations too. When you believe in someone, or when someone matters to you, you don't just stand by and watch. You go to war for them. I hope you know how much that means to the people on the receiving end of it. I really appreciate this about you.",
     position: { x: 1.236, y: -24.0, z: 0.061 },
     balloonSize: 1.03,
     photoRotation: 0.0,
@@ -220,7 +220,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 24,
     image: "/photos/24.webp",
-    message: "Appreciation message 24",
+    message: "This one is so random, but I genuinely love how peaceful you look when you fall asleep. It's just so cute. After watching you do a million things, think about a million things, and carry so much, there's something really sweet about seeing you finally switch off and rest. You look so peaceful, and I don't know, it just makes me happy.",
     position: { x: -1.128, y: -25.5, z: -0.187 },
     balloonSize: 0.99,
     photoRotation: 0.0,
@@ -229,7 +229,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 25,
     image: "/photos/25.webp",
-    message: "Appreciation message 25",
+    message: "I really appreciate how deeply you love. The things you believe in, the people who matter to you, the things you're building… you don't seem to know how to do any of it halfway. You give so much of yourself to what you love, and I think that's a gift. I hope you never lose that part of yourself. It's one of the things I admire most about you.",
     position: { x: 0.072, y: -27.0, z: -0.469 },
     balloonSize: 0.95,
     photoRotation: 0.0,
@@ -238,7 +238,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 26,
     image: "/photos/26.webp",
-    message: "Appreciation message 26",
+    message: "I appreciate that you don't make people feel invisible. You notice them, you recognise what they're capable of, and you make a point of letting them know that they matter. I think sometimes people don't realise just how much it means to have someone genuinely pay attention to them. You do that, and I hope you know it's special.",
     position: { x: 1.407, y: -28.5, z: 0.55 },
     balloonSize: 1.07,
     photoRotation: 0.0,
@@ -247,7 +247,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 27,
     image: "/photos/27.webp",
-    message: "Appreciation message 27",
+    message: "I appreciate that you don't just talk about what could be; you make people believe that something better is actually possible. Through the way you work, the way you dream, and the way you keep going, you give people a picture of what they could become and what they could build. I hope you know that your life is teaching people things even when you're not deliberately trying to teach them.",
     position: { x: -0.176, y: -30.0, z: 0.404 },
     balloonSize: 1.03,
     photoRotation: 0.0,

@@ -17,8 +17,6 @@ interface Props {
   reducedMotion: boolean;
   position: [number, number, number];
   flipped: boolean;
-  onPointerDown?: (e: any) => void;
-  onClick?: (e: any) => void;
 }
 
 /**
@@ -42,7 +40,7 @@ function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
   let lineHeight = 46;
   const maxWidth = canvas.width - 96;
   const wrap = (fs: number) => {
-    ctx.font = `italic bold ${fs}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
+    ctx.font = `bold italic ${fs}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
     const ls: string[] = [];
     let l = '';
     for (const w of message.split(' ')) {
@@ -65,7 +63,7 @@ function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
   }
 
   ctx.fillStyle = '#111111';
-  ctx.font = `italic bold ${fontSize}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
+  ctx.font = `bold italic ${fontSize}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   const startY = Math.max(60, canvas.height / 2 - (lines.length * lineHeight) / 2 + 8);
@@ -82,7 +80,7 @@ function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
   return tex;
 }
 
-export default function MemoryPhoto({ item, reducedMotion, position, flipped, onPointerDown, onClick }: Props) {
+export default function MemoryPhoto({ item, reducedMotion, position, flipped }: Props) {
   const mem = item;
   const popRef = useRef<THREE.Group>(null);
   const cardRef = useRef<THREE.Group>(null);
@@ -143,44 +141,31 @@ export default function MemoryPhoto({ item, reducedMotion, position, flipped, on
 
   return (
     <group position={position}>
-      {/* pop group: independent of the flip rotation, so +Z always moves toward camera */}
       <group ref={popRef}>
         <group ref={cardRef}>
           {/* BACK: royal-blue frame, behind the message after the flip */}
-          <mesh
-            position={[0, 0, -0.005]}
-            rotation={[0, Math.PI, 0]}
-            onPointerDown={onPointerDown}
-            onClick={onClick}
-          >
+          <mesh position={[0, 0, -0.005]} rotation={[0, Math.PI, 0]}>
             <planeGeometry args={[frameW, frameH]} />
             <meshBasicMaterial color="#1E3A8A" side={THREE.DoubleSide} />
           </mesh>
 
           {/* BACK: message texture, front-most once flipped */}
-          <mesh
-            position={[0, 0, -0.01]}
-            rotation={[0, Math.PI, 0]}
-            onPointerDown={onPointerDown}
-            onClick={onClick}
-          >
+          <mesh position={[0, 0, -0.01]} rotation={[0, Math.PI, 0]}>
             <planeGeometry args={[photoW, photoH]} />
             <meshBasicMaterial map={backTex} side={THREE.DoubleSide} />
           </mesh>
 
           {/* FRONT: white frame */}
-          <mesh position={[0, 0, 0.005]} onPointerDown={onPointerDown} onClick={onClick}>
+          <mesh position={[0, 0, 0.005]}>
             <planeGeometry args={[frameW, frameH]} />
             <meshBasicMaterial color="#FFFFFF" side={THREE.DoubleSide} />
           </mesh>
 
-          {/* FRONT: photo (some rotated upside down, back text stays upright) */}
+          {/* FRONT: photo (13 and 17 upside down; back text stays upright) */}
           <mesh
             ref={photoMeshRef}
             position={[0, 0, 0.01]}
             rotation={[0, 0, upsideDown ? Math.PI : 0]}
-            onPointerDown={onPointerDown}
-            onClick={onClick}
           >
             <planeGeometry args={[photoW, photoH]} />
             <meshBasicMaterial map={photoTex} side={THREE.DoubleSide} />
