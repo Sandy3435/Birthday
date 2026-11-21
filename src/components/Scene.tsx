@@ -1,5 +1,4 @@
-import { Suspense } from 'react';
-import { useScroll } from '@react-three/drei';
+import { Suspense, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import * as THREE from 'three';
@@ -10,12 +9,23 @@ import { CAMERA_START_Y, CAMERA_END_Y } from '../lib/layout';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
 function ScrollRig({ reducedMotion }: { reducedMotion: boolean }) {
-  const scroll = useScroll();
   const { camera } = useThree();
   const setScroll = useStore((s) => s.setScroll);
+  const scroll = useStore((s) => s.scroll);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const o = max > 0 ? window.scrollY / max : 0;
+      setScroll(Math.min(1, Math.max(0, o)));
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [setScroll]);
+
   useFrame(() => {
-    const o = scroll.offset;
-    setScroll(o);
+    const o = scroll;
     const aspect = (camera as THREE.PerspectiveCamera).aspect || 1;
     const baseZ = aspect < 1 ? 8.8 : 6.5;
     const startY = CAMERA_START_Y;
