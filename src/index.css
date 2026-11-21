@@ -61,6 +61,41 @@ body { overflow-y: auto; overflow-x: hidden; font-family: 'DM Sans', 'Inter', sy
   font-weight: 500;
 }
 
+/* the 3D balloon world only fades in after a light scroll */
+.scene-layer {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+}
+.scene-layer.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* standalone line shown just before the first picture */
+.intro-line {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: min(90vw, 900px);
+  text-align: center;
+  font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.8rem, 5vw, 3.4rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  pointer-events: none;
+}
+.intro-line.show {
+  opacity: 1;
+}
+
 .scroll-hint {
   position: fixed;
   bottom: 7vh;

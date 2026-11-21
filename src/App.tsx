@@ -6,9 +6,13 @@ import { SCROLL_PAGES } from './lib/layout';
 import { useStore } from './store';
 
 export default function App() {
+  const scroll = useStore((s) => s.scroll);
+  const sceneVisible = scroll > 0.015;
+
   // Manual raycast from a transparent HTML layer. This is more reliable than
   // relying on R3F's pointer events across resizes, touch and scroll.
   const handleSceneClick = (e: any) => {
+    if (!sceneVisible) return;
     const { scene, camera } = sceneBridge;
     if (!scene || !camera) return;
 
@@ -37,9 +41,13 @@ export default function App() {
     <div className="app">
       <div className="bg-text" aria-hidden="true">
         <h1>Happy Birthday, Superman.</h1>
-        <p>Twenty-seven little things, and probably a million more.</p>
+        <p>Twenty-seven things I appreciate about you, even though there is a million million more.</p>
       </div>
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 1 }}>
+
+      <div
+        className={`scene-layer ${sceneVisible ? 'visible' : ''}`}
+        style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 1 }}
+      >
         <Canvas
           style={{ width: '100%', height: '100%' }}
           camera={{ position: [0, 8.5, (typeof window !== 'undefined' && window.innerWidth < 640) ? 11 : 6.5], fov: 50, near: 0.1, far: 100 }}
@@ -59,6 +67,7 @@ export default function App() {
           <Scene />
         </Canvas>
       </div>
+
       {/* Transparent interaction layer: captures taps/clicks and raycasts manually. */}
       <div
         onClick={handleSceneClick}
@@ -66,12 +75,18 @@ export default function App() {
           position: 'fixed',
           inset: 0,
           zIndex: 1,
-          pointerEvents: 'auto',
+          pointerEvents: sceneVisible ? 'auto' : 'none',
           touchAction: 'pan-y',
           cursor: 'pointer',
         }}
         aria-hidden="true"
       />
+
+      {/* Standalone line that appears just before the first picture. */}
+      <div className={`intro-line ${scroll > 0.003 && scroll < 0.03 ? 'show' : ''}`}>
+        I appreciate and love...
+      </div>
+
       <div className="scroll-spacer" aria-hidden="true" style={{ height: `${SCROLL_PAGES * 100}vh`, pointerEvents: 'none' }} />
       <Overlay />
     </div>
