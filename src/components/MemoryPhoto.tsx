@@ -1,4 +1,4 @@
-import { useRef, useState, useMemo, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Text, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
@@ -20,74 +20,6 @@ interface Props {
   position: [number, number, number];
 }
 
-function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
-  const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 683;
-  const ctx = canvas.getContext('2d')!;
-  // warm ivory background
-  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  grad.addColorStop(0, '#2563EB');
-  grad.addColorStop(1, '#1E3A8A');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // subtle border
-  ctx.strokeStyle = 'rgba(255,255,255,0.35)';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(22, 22, canvas.width - 44, canvas.height - 44);
-
-  // ornamental tiny star
-  ctx.fillStyle = 'rgba(255,255,255,0.7)';
-  ctx.font = '20px serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('\u2726', canvas.width / 2, 58);
-
-  // adaptive font size based on message length
-  let fontSize = 24;
-  let lineHeight = 32;
-  ctx.font = `italic ${fontSize}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
-  const maxWidth = canvas.width - 96;
-  const wrap = (fs: number) => {
-    ctx.font = `italic ${fs}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
-    const ls: string[] = [];
-    let l = '';
-    for (const w of message.split(' ')) {
-      const test = l ? l + ' ' + w : w;
-      if (ctx.measureText(test).width > maxWidth && l) {
-        ls.push(l);
-        l = w;
-      } else {
-        l = test;
-      }
-    }
-    if (l) ls.push(l);
-    return ls;
-  };
-  let lines = wrap(fontSize);
-  while (lines.length > 15 && fontSize > 16) {
-    fontSize -= 2;
-    lineHeight -= 2;
-    lines = wrap(fontSize);
-  }
-  ctx.fillStyle = '#FFFFFF';
-  ctx.font = `italic ${fontSize}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  const startY = Math.max(60, canvas.height / 2 - (lines.length * lineHeight) / 2 + 8);
-  lines.forEach((l, i) => {
-    ctx.fillText(l, canvas.width / 2, startY + i * lineHeight);
-  });
-
-  ctx.fillStyle = 'rgba(255,255,255,0.75)';
-  ctx.font = '14px "DM Sans", sans-serif';
-  ctx.fillText(`${String(id).padStart(2, '0')} / 27`, canvas.width / 2, canvas.height - 46);
-
-  const tex = new THREE.CanvasTexture(canvas);
-  tex.needsUpdate = true;
-  return tex;
-}
-
 export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
   const mem = item;
   const cardRef = useRef<THREE.Group>(null);
@@ -101,7 +33,6 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
   const { camera } = useThree();
 
   const photoTex = useTexture(mem.image);
-  const backTex = useMemo(() => makeBackTexture(mem.message, mem.id), [mem.message, mem.id]);
 
   useEffect(() => {
     const img = photoTex.image as { width: number; height: number } | undefined;
@@ -215,11 +146,37 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
           <planeGeometry args={[frameW, frameH]} />
           <meshStandardMaterial color="#FFFFFF" roughness={0.9} />
         </mesh>
-        {/* back photo/message */}
-        <mesh position={[0, 0, -0.006]} rotation={[0, Math.PI, 0]} onClick={handleClick}>
+        {/* back background */}
+        <mesh position={[0, 0, -0.007]} rotation={[0, Math.PI, 0]} onClick={handleClick}>
           <planeGeometry args={[photoW, photoH]} />
-          <meshBasicMaterial map={backTex} side={THREE.FrontSide} />
+          <meshStandardMaterial color="#1E3A8A" roughness={0.9} />
         </mesh>
+        {/* back message text */}
+        <Text
+          position={[0, 0, -0.006]}
+          rotation={[0, Math.PI, 0]}
+          fontSize={0.11}
+          color="#FFFFFF"
+          maxWidth={1.05}
+          textAlign="center"
+          anchorX="center"
+          anchorY="middle"
+          lineHeight={1.25}
+          onClick={handleClick}
+        >
+          {mem.message}
+        </Text>
+        <Text
+          position={[0, -0.72, -0.006]}
+          rotation={[0, Math.PI, 0]}
+          fontSize={0.1}
+          color="rgba(255,255,255,0.7)"
+          anchorX="center"
+          anchorY="middle"
+          onClick={handleClick}
+        >
+          {`${String(mem.id).padStart(2, '0')} / 27`}
+        </Text>
 
         {/* front frame */}
         <mesh position={[0, 0, -0.002]}>
