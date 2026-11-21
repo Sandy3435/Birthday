@@ -193,7 +193,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 21,
     image: "/photos/21.webp",
-    message: "Appreciation message 21",
+    message: "Three months. Sleeping in the office. Everybody leaving. Things getting hard. And somehow you stayed every single day. I genuinely don't know where you get this level of grit, but I'm glad you do. I appreciate how deeply you believe in what you're building, and how you keep showing up especially when things aren't easy.",
     position: { x: -0.85, y: -21.0, z: 0.0 },
     balloonSize: 0.95,
     photoRotation: 0.0,
