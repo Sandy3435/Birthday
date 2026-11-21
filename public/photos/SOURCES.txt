@@ -1,0 +1,27 @@
+01.webp <- 20250415_154430.jpg
+02.webp <- 20250429_153304.jpg
+03.webp <- 20250429_153524.jpg
+04.webp <- DSC_01471111111.jpg
+05.webp <- IMG-20231003-WA0032.jpg
+06.webp <- IMG-20231003-WA0041.jpg
+07.webp <- IMG-20231003-WA0042.jpg
+08.webp <- IMG-20241128-WA0075.jpg
+09.webp <- IMG-20250425-WA0033.jpg
+10.webp <- IMG-20250729-WA0039.jpg
+11.webp <- IMG-20250729-WA0043.jpg
+12.webp <- IMG-20250903-WA0041.jpg
+13.webp <- IMG_7820.JPG
+14.webp <- IMG_7827.JPG
+15.webp <- IMG_7828.JPG
+16.webp <- PXL_20250705_130230869.MP.jpg
+17.webp <- PXL_20250705_155705924.jpg
+18.webp <- PXL_20250830_171401862.jpg
+19.webp <- Screenshot 2026-11-21 143140.png
+20.webp <- Screenshot 2026-11-21 143215.png
+21.webp <- Screenshot 2026-11-21 143230.png
+22.webp <- Screenshot 2026-11-21 143303.png
+23.webp <- Screenshot_20250728_091623_WhatsApp.jpg
+24.webp <- WhatsApp Image 2026-11-21 at 14.05.47.jpeg
+25.webp <- WhatsApp Image 2026-11-21 at 14.06.13.jpeg
+26.webp <- WhatsApp Image 2026-11-21 at 14.07.48.jpeg
+27.webp <- WhatsApp Image 2026-11-21 at 14.35.25.jpeg
