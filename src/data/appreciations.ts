@@ -49,7 +49,7 @@ export const appreciationItems: AppreciationItem[] = [
   {
     id: 5,
     image: "/photos/05.webp",
-    message: "Appreciation message 05",
+    message: "It's actually such a relief knowing that when you say you'll do something, I don't have to worry at all. 😭 You just deliver. And you deliver excellently WELL. I appreciate that you are someone people can genuinely count on. I appreciate knowing that when something is in your hands, you'll give it your best.",
     position: { x: -0.85, y: 3.0, z: 0.0 },
     balloonSize: 0.95,
     photoRotation: 0.0,

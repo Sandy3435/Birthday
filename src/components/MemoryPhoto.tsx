@@ -43,26 +43,38 @@ function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
   ctx.textAlign = 'center';
   ctx.fillText('\u2726', canvas.width / 2, 58);
 
+  // adaptive font size based on message length
+  let fontSize = 24;
+  let lineHeight = 32;
+  ctx.font = `italic ${fontSize}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
+  const maxWidth = canvas.width - 96;
+  const wrap = (fs: number) => {
+    ctx.font = `italic ${fs}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
+    const ls: string[] = [];
+    let l = '';
+    for (const w of message.split(' ')) {
+      const test = l ? l + ' ' + w : w;
+      if (ctx.measureText(test).width > maxWidth && l) {
+        ls.push(l);
+        l = w;
+      } else {
+        l = test;
+      }
+    }
+    if (l) ls.push(l);
+    return ls;
+  };
+  let lines = wrap(fontSize);
+  while (lines.length > 15 && fontSize > 16) {
+    fontSize -= 2;
+    lineHeight -= 2;
+    lines = wrap(fontSize);
+  }
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = 'italic 26px "Cormorant Garamond", "Playfair Display", Georgia, serif';
+  ctx.font = `italic ${fontSize}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  const words = message.split(' ');
-  const lines: string[] = [];
-  let line = '';
-  const maxWidth = canvas.width - 96;
-  for (const w of words) {
-    const test = line ? line + ' ' + w : w;
-    if (ctx.measureText(test).width > maxWidth && line) {
-      lines.push(line);
-      line = w;
-    } else {
-      line = test;
-    }
-  }
-  if (line) lines.push(line);
-  const lineHeight = 34;
-  const startY = canvas.height / 2 - (lines.length * lineHeight) / 2 + 8;
+  const startY = Math.max(60, canvas.height / 2 - (lines.length * lineHeight) / 2 + 8);
   lines.forEach((l, i) => {
     ctx.fillText(l, canvas.width / 2, startY + i * lineHeight);
   });
