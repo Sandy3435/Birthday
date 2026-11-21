@@ -24,7 +24,7 @@ export default function Overlay() {
       {scroll > 0.93 && (
         <div className="closing">
           <p className="closing-head">And that's only 27 of the reasons.</p>
-          <p className="closing-body">Your final birthday message will go here.</p>
+          <p className="closing-body">Happy Birthday, You Are Amazing!</p>
         </div>
       )}
     </>
