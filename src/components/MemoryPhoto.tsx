@@ -170,7 +170,7 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
           position={[0, -0.72, -0.006]}
           rotation={[0, Math.PI, 0]}
           fontSize={0.1}
-          color="rgba(255,255,255,0.7)"
+          color="#BFDBFE"
           anchorX="center"
           anchorY="middle"
           onClick={handleClick}
