@@ -1,9 +1,7 @@
-import { useRef, useState, useEffect, useMemo } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useRef, useEffect, useMemo } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
-import confetti from 'canvas-confetti';
-import { useStore } from '../store';
 
 interface Item {
   id: number;
@@ -18,12 +16,12 @@ interface Props {
   item: Item;
   reducedMotion: boolean;
   position: [number, number, number];
+  flipped: boolean;
 }
 
 /**
  * Draws the reverse side of the card to a canvas texture.
- * White card, black message text, royal-blue border + footer.
- * High resolution so the text stays crisp when the card pops forward.
+ * White card, bold black message text, royal-blue border + footer.
  */
 function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
@@ -31,21 +29,18 @@ function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
   canvas.height = 853;
   const ctx = canvas.getContext('2d')!;
 
-  // card surface
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // royal-blue border
   ctx.strokeStyle = '#1E3A8A';
   ctx.lineWidth = 5;
   ctx.strokeRect(18, 18, canvas.width - 36, canvas.height - 36);
 
-  // adaptive font sizing so long messages stay inside the card
   let fontSize = 34;
   let lineHeight = 46;
   const maxWidth = canvas.width - 96;
   const wrap = (fs: number) => {
-    ctx.font = `italic ${fs}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
+    ctx.font = `italic bold ${fs}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
     const ls: string[] = [];
     let l = '';
     for (const w of message.split(' ')) {
@@ -68,7 +63,7 @@ function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
   }
 
   ctx.fillStyle = '#111111';
-  ctx.font = `italic ${fontSize}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
+  ctx.font = `italic bold ${fontSize}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   const startY = Math.max(60, canvas.height / 2 - (lines.length * lineHeight) / 2 + 8);
@@ -76,9 +71,8 @@ function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
     ctx.fillText(l, canvas.width / 2, startY + i * lineHeight);
   });
 
-  // footer
   ctx.fillStyle = '#1E3A8A';
-  ctx.font = '17px "DM Sans", sans-serif';
+  ctx.font = 'bold 17px "DM Sans", sans-serif';
   ctx.fillText(`${String(id).padStart(2, '0')} / 27`, canvas.width / 2, canvas.height - 46);
 
   const tex = new THREE.CanvasTexture(canvas);
@@ -86,18 +80,14 @@ function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
   return tex;
 }
 
-export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
+export default function MemoryPhoto({ item, reducedMotion, position, flipped }: Props) {
   const mem = item;
   const popRef = useRef<THREE.Group>(null);
   const cardRef = useRef<THREE.Group>(null);
   const photoMeshRef = useRef<THREE.Mesh>(null);
-  const [flipped, setFlipped] = useState(false);
 
   const flipTarget = useRef(0);
   const popAmount = useRef(0);
-  const opened = useStore((s) => s.opened);
-  const open = useStore((s) => s.open);
-  const { camera } = useThree();
 
   const photoTex = useTexture(mem.image);
   const backTex = useMemo(() => makeBackTexture(mem.message, mem.id), [mem.message, mem.id]);
@@ -112,11 +102,8 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
     const boxAspect = boxW / boxH;
     let sx = 1;
     let sy = 1;
-    if (aspect > boxAspect) {
-      sy = boxAspect / aspect;
-    } else {
-      sx = aspect / boxAspect;
-    }
+    if (aspect > boxAspect) sy = boxAspect / aspect;
+    else sx = aspect / boxAspect;
     photoMeshRef.current.scale.set(sx, sy, 1);
   }, [photoTex]);
 
@@ -129,14 +116,12 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
   useFrame((_, delta) => {
     if (!cardRef.current) return;
 
-    // flip rotation
     const target = flipped ? Math.PI : 0;
     const speed = reducedMotion ? 16 : 7;
     flipTarget.current += (target - flipTarget.current) * Math.min(1, delta * speed);
     if (Math.abs(target - flipTarget.current) < 0.001) flipTarget.current = target;
     cardRef.current.rotation.y = flipTarget.current;
 
-    // pop the card toward the viewer + scale it up so the message is readable
     if (popRef.current) {
       const targetPop = flipped ? 1 : 0;
       popAmount.current += (targetPop - popAmount.current) * Math.min(1, delta * 6);
@@ -146,40 +131,13 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
     }
   });
 
-  const fireConfetti = () => {
-    if (!popRef.current) return;
-    const p = new THREE.Vector3();
-    popRef.current.getWorldPosition(p);
-    p.project(camera);
-    const x = (p.x + 1) / 2;
-    const y = (1 - p.y) / 2;
-    confetti({
-      origin: { x: Math.min(Math.max(x, 0.05), 0.95), y: Math.min(Math.max(y, 0.05), 0.95) },
-      particleCount: reducedMotion ? 12 : 40,
-      spread: 60,
-      colors: ['#FFFFFF', '#BFDBFE', '#1E3A8A', '#93C5FD', '#E0EAFF'],
-      gravity: 0.7,
-      ticks: 180,
-      scalar: 0.85,
-      shapes: ['circle', 'square'],
-    });
-  };
-
-  const handleClick = (e: any) => {
-    e.stopPropagation();
-    const nowFlipped = !flipped;
-    setFlipped(nowFlipped);
-    const wasOpened = opened.has(mem.id);
-    if (nowFlipped && !wasOpened) {
-      open(mem.id);
-      if (!reducedMotion) fireConfetti();
-    }
-  };
-
   const frameW = 1.35;
   const frameH = 1.78;
   const photoW = 1.2;
   const photoH = 1.6;
+
+  // These two photos are shown upside down on the front only.
+  const upsideDown = mem.id === 13 || mem.id === 17;
 
   return (
     <group position={position}>
@@ -187,13 +145,13 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
       <group ref={popRef}>
         <group ref={cardRef}>
           {/* BACK: royal-blue frame, behind the message after the flip */}
-          <mesh position={[0, 0, -0.005]} rotation={[0, Math.PI, 0]} onClick={handleClick}>
+          <mesh position={[0, 0, -0.005]} rotation={[0, Math.PI, 0]}>
             <planeGeometry args={[frameW, frameH]} />
             <meshBasicMaterial color="#1E3A8A" side={THREE.DoubleSide} />
           </mesh>
 
           {/* BACK: message texture, front-most once flipped */}
-          <mesh position={[0, 0, -0.01]} rotation={[0, Math.PI, 0]} onClick={handleClick}>
+          <mesh position={[0, 0, -0.01]} rotation={[0, Math.PI, 0]}>
             <planeGeometry args={[photoW, photoH]} />
             <meshBasicMaterial map={backTex} side={THREE.DoubleSide} />
           </mesh>
@@ -204,8 +162,12 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
             <meshBasicMaterial color="#FFFFFF" side={THREE.DoubleSide} />
           </mesh>
 
-          {/* FRONT: photo */}
-          <mesh ref={photoMeshRef} position={[0, 0, 0.01]} onClick={handleClick}>
+          {/* FRONT: photo (some rotated upside down, back text stays upright) */}
+          <mesh
+            ref={photoMeshRef}
+            position={[0, 0, 0.01]}
+            rotation={[0, 0, upsideDown ? Math.PI : 0]}
+          >
             <planeGeometry args={[photoW, photoH]} />
             <meshBasicMaterial map={photoTex} side={THREE.DoubleSide} />
           </mesh>
