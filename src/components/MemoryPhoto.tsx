@@ -144,24 +144,24 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
         {/* back frame */}
         <mesh position={[0, 0, -0.008]} rotation={[0, Math.PI, 0]}>
           <planeGeometry args={[frameW, frameH]} />
-          <meshStandardMaterial color="#FFFFFF" roughness={0.9} />
+          <meshStandardMaterial color="#1E3A8A" roughness={0.9} />
         </mesh>
         {/* back background */}
         <mesh position={[0, 0, -0.007]} rotation={[0, Math.PI, 0]} onClick={handleClick}>
           <planeGeometry args={[photoW, photoH]} />
-          <meshStandardMaterial color="#1E3A8A" roughness={0.9} />
+          <meshStandardMaterial color="#FFFFFF" roughness={0.9} />
         </mesh>
         {/* back message text */}
         <Text
           position={[0, 0, -0.006]}
           rotation={[0, Math.PI, 0]}
-          fontSize={0.11}
-          color="#FFFFFF"
-          maxWidth={1.05}
+          fontSize={0.085}
+          color="#111111"
+          maxWidth={0.95}
           textAlign="center"
           anchorX="center"
           anchorY="middle"
-          lineHeight={1.25}
+          lineHeight={1.2}
           onClick={handleClick}
         >
           {mem.message}
@@ -169,8 +169,8 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
         <Text
           position={[0, -0.72, -0.006]}
           rotation={[0, Math.PI, 0]}
-          fontSize={0.1}
-          color="#BFDBFE"
+          fontSize={0.09}
+          color="#1E3A8A"
           anchorX="center"
           anchorY="middle"
           onClick={handleClick}
