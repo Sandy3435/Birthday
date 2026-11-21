@@ -13,7 +13,7 @@ export default function Overlay() {
         </div>
       )}
 
-      {scroll > 0.04 && scroll < 0.9 && (
+      {scroll < 0.9 && (
         <div className="tap-hint">Tap a photo. There is something on the other side.</div>
       )}
 

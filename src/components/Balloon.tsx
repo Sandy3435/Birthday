@@ -51,6 +51,35 @@ export default function Balloon({ size = 1, onPointerDown, onClick }: Props) {
         <coneGeometry args={[0.06, 0.1, 12]} />
         <meshStandardMaterial color="#F5F0E8" roughness={0.4} />
       </mesh>
+
+      {/* little red bow tied at the knot */}
+      <group position={[0, -0.53 * s, 0.05 * s]} scale={s}>
+        {/* centre knot */}
+        <mesh>
+          <sphereGeometry args={[0.028, 12, 12]} />
+          <meshStandardMaterial color="#C81E1E" roughness={0.45} />
+        </mesh>
+        {/* left loop */}
+        <mesh position={[-0.048, 0.008, 0]} rotation={[0, 0, 0.5]} scale={[1, 0.52, 0.5]}>
+          <sphereGeometry args={[0.05, 14, 14]} />
+          <meshStandardMaterial color="#C81E1E" roughness={0.45} />
+        </mesh>
+        {/* right loop */}
+        <mesh position={[0.048, 0.008, 0]} rotation={[0, 0, -0.5]} scale={[1, 0.52, 0.5]}>
+          <sphereGeometry args={[0.05, 14, 14]} />
+          <meshStandardMaterial color="#C81E1E" roughness={0.45} />
+        </mesh>
+        {/* left tail */}
+        <mesh position={[-0.022, -0.055, 0]} rotation={[0, 0, 0.28]}>
+          <coneGeometry args={[0.018, 0.085, 8]} />
+          <meshStandardMaterial color="#B91C1C" roughness={0.5} />
+        </mesh>
+        {/* right tail */}
+        <mesh position={[0.022, -0.055, 0]} rotation={[0, 0, -0.28]}>
+          <coneGeometry args={[0.018, 0.085, 8]} />
+          <meshStandardMaterial color="#B91C1C" roughness={0.5} />
+        </mesh>
+      </group>
     </group>
   );
 }

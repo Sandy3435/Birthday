@@ -26,16 +26,13 @@ export default function MemoryItem({ index, reducedMotion }: Props) {
   const groupRef = useRef<THREE.Group>(null);
   const seed = item.animationSeed ?? index * 0.37;
 
-  // draggable base position (float animation is applied around this)
+  // base position for floating animation (and drag)
   const basePos = useRef<[number, number, number]>([...balloonPos] as [number, number, number]);
 
-  // flip state (lifted here so the whole item can handle clicks + dragging)
   const [flipped, setFlipped] = useState(false);
   const flippedRef = useRef(false);
 
-  // gesture bookkeeping
   const lastTap = useRef(0);
-  const clickTimer = useRef<number | null>(null);
   const ignoreClick = useRef(false);
   const dragging = useRef(false);
 
@@ -79,30 +76,22 @@ export default function MemoryItem({ index, reducedMotion }: Props) {
     });
   };
 
+  // Single click / tap flips immediately.
   const handleClick = (e: any) => {
     e.stopPropagation();
     if (dragging.current || ignoreClick.current) return;
 
-    // A second click quickly after the first cancels the single-click flip.
-    if (clickTimer.current !== null) {
-      window.clearTimeout(clickTimer.current);
-      clickTimer.current = null;
-      return;
-    }
+    const next = !flippedRef.current;
+    flippedRef.current = next;
+    setFlipped(next);
 
-    clickTimer.current = window.setTimeout(() => {
-      clickTimer.current = null;
-      const next = !flippedRef.current;
-      flippedRef.current = next;
-      setFlipped(next);
-      if (next) {
-        const st = useStore.getState();
-        if (!st.opened.has(item.id)) {
-          st.open(item.id);
-          if (!reducedMotion) fireConfetti();
-        }
+    if (next) {
+      const st = useStore.getState();
+      if (!st.opened.has(item.id)) {
+        st.open(item.id);
+        if (!reducedMotion) fireConfetti();
       }
-    }, 260);
+    }
   };
 
   const startDrag = (e: any) => {
@@ -116,7 +105,10 @@ export default function MemoryItem({ index, reducedMotion }: Props) {
     plane.setFromNormalAndCoplanarPoint(normal, worldPos);
 
     const start = new THREE.Vector3();
-    if (!e.ray.intersectPlane(plane, start)) return;
+    if (!e.ray.intersectPlane(plane, start)) {
+      ignoreClick.current = false;
+      return;
+    }
 
     const origin = groupRef.current.position.clone();
     dragging.current = true;
@@ -146,7 +138,6 @@ export default function MemoryItem({ index, reducedMotion }: Props) {
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerup', up);
       window.removeEventListener('pointercancel', up);
-      // Let the synthetic click from this gesture be swallowed.
       window.setTimeout(() => {
         ignoreClick.current = false;
       }, 0);
@@ -162,10 +153,6 @@ export default function MemoryItem({ index, reducedMotion }: Props) {
     const now = performance.now();
     if (now - lastTap.current < 320) {
       // double tap + hold -> drag the balloon and its photo
-      if (clickTimer.current !== null) {
-        window.clearTimeout(clickTimer.current);
-        clickTimer.current = null;
-      }
       ignoreClick.current = true;
       startDrag(e);
     } else {
@@ -180,8 +167,7 @@ export default function MemoryItem({ index, reducedMotion }: Props) {
     const t = state.clock.elapsedTime;
     groupRef.current.position.x = basePos.current[0];
     groupRef.current.position.z = basePos.current[2];
-    groupRef.current.position.y =
-      basePos.current[1] + Math.sin(t * 0.8 + seed * 6) * 0.12;
+    groupRef.current.position.y = basePos.current[1] + Math.sin(t * 0.8 + seed * 6) * 0.12;
     groupRef.current.rotation.z = Math.sin(t * 0.6 + seed * 4) * 0.06;
     groupRef.current.rotation.x = Math.sin(t * 0.45 + seed * 2) * 0.03;
   });
