@@ -1,26 +1,21 @@
 :root {
-  --bg0: #FAF8F4;
-  --bg1: #F5F0E8;
-  --ink: #5C514B;
-  --muted: #B8AA9A;
-  --accent: #E8DCCB;
-  --taupe: #B8AA9A;
-  --charcoal: #5C514B;
+  --bg0: #1E3A8A;
+  --bg1: #2563EB;
+  --ink: #FFFFFF;
+  --muted: #BFDBFE;
+  --accent: #FFFFFF;
+  --taupe: #BFDBFE;
+  --charcoal: #FFFFFF;
+  --royal: #4169E1;
+  --royal-deep: #1E3A8A;
 }
 
 * { box-sizing: border-box; }
 html, body, #root { margin: 0; padding: 0; min-height: 100%; }
-body { overflow-y: auto; overflow-x: hidden; }
-body {
-  font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
-  background: radial-gradient(ellipse at 50% 38%, var(--bg0) 0%, var(--bg1) 100%);
-  color: var(--ink);
-  -webkit-font-smoothing: antialiased;
-}
+body { overflow-y: auto; overflow-x: hidden; font-family: 'DM Sans', 'Inter', system-ui, sans-serif; background: radial-gradient(ellipse at 50% 38%, var(--bg0) 0%, var(--bg1) 100%); color: var(--ink); -webkit-font-smoothing: antialiased; }
 
 .app { position: relative; width: 100vw; min-height: 100vh; }
 
-/* atmospheric haze */
 .app::before {
   content: '';
   position: fixed;
@@ -28,8 +23,8 @@ body {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.55) 0%, transparent 55%),
-    radial-gradient(ellipse at 70% 70%, rgba(245,240,232,0.35) 0%, transparent 60%);
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 70%, rgba(65,105,225,0.25) 0%, transparent 60%);
 }
 
 .bg-text {
@@ -52,9 +47,9 @@ body {
   font-size: clamp(2.6rem, 8vw, 6rem);
   letter-spacing: -0.01em;
   margin: 0;
-  color: #B8AA9A;
-  opacity: 0.55;
-  text-shadow: 0 2px 24px rgba(255,255,255,0.6);
+  color: #FFFFFF;
+  opacity: 0.9;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.25);
 }
 .bg-text p {
   margin: 0.75rem 0 0;
@@ -62,7 +57,7 @@ body {
   font-size: clamp(0.85rem, 1.6vw, 1.1rem);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #C9BFB2;
+  color: #BFDBFE;
   font-weight: 500;
 }
 
@@ -79,11 +74,11 @@ body {
   font-size: 0.85rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #B8AA9A;
+  color: #FFFFFF;
   pointer-events: none;
   animation: bob 2.4s ease-in-out infinite;
 }
-.scroll-arrow { font-size: 1.1rem; opacity: 0.7; }
+.scroll-arrow { font-size: 1.1rem; opacity: 0.8; }
 @keyframes bob {
   0%,100% { transform: translateX(-50%) translateY(0); opacity: 0.75; }
   50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
@@ -98,9 +93,9 @@ body {
   font-size: 0.78rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #B8AA9A;
+  color: #BFDBFE;
   pointer-events: none;
-  opacity: 0.8;
+  opacity: 0.9;
   text-align: center;
 }
 
@@ -111,13 +106,13 @@ body {
   z-index: 2;
   padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.18);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(216,213,208,0.5);
+  border: 1px solid rgba(255,255,255,0.35);
   font-size: 0.78rem;
-  color: #5C514B;
+  color: #FFFFFF;
   letter-spacing: 0.06em;
-  box-shadow: 0 4px 18px rgba(92,81,75,0.05);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.15);
 }
 
 .closing {
@@ -134,14 +129,14 @@ body {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-size: clamp(1.5rem, 4vw, 2.4rem);
-  color: #5C514B;
+  color: #FFFFFF;
   margin: 0 0 0.6rem;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 .closing-body {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(1rem, 2vw, 1.3rem);
-  color: #B8AA9A;
+  color: #BFDBFE;
   margin: 0;
   letter-spacing: 0.04em;
 }
@@ -152,7 +147,6 @@ body {
   .bg-text h1 { font-size: clamp(2.2rem, 11vw, 4rem); }
 }
 
-/* reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .scroll-hint { animation: none; }
 }

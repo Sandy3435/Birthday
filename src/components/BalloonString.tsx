@@ -8,7 +8,7 @@ export default function BalloonString({ points }: Props) {
   return (
     <Line
       points={points}
-      color="#D8D5D0"
+      color="#BFDBFE"
       lineWidth={1.1}
       transparent
       opacity={0.85}

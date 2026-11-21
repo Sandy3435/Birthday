@@ -27,23 +27,23 @@ function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
   const ctx = canvas.getContext('2d')!;
   // warm ivory background
   const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  grad.addColorStop(0, '#FFFFFF');
-  grad.addColorStop(1, '#F5F0E8');
+  grad.addColorStop(0, '#2563EB');
+  grad.addColorStop(1, '#1E3A8A');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // subtle border
-  ctx.strokeStyle = 'rgba(184,170,154,0.35)';
+  ctx.strokeStyle = 'rgba(255,255,255,0.35)';
   ctx.lineWidth = 2;
   ctx.strokeRect(22, 22, canvas.width - 44, canvas.height - 44);
 
   // ornamental tiny star
-  ctx.fillStyle = 'rgba(184,170,154,0.6)';
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
   ctx.font = '20px serif';
   ctx.textAlign = 'center';
   ctx.fillText('\u2726', canvas.width / 2, 58);
 
-  ctx.fillStyle = '#5C514B';
+  ctx.fillStyle = '#FFFFFF';
   ctx.font = 'italic 26px "Cormorant Garamond", "Playfair Display", Georgia, serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -67,7 +67,7 @@ function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
     ctx.fillText(l, canvas.width / 2, startY + i * lineHeight);
   });
 
-  ctx.fillStyle = '#B8AA9A';
+  ctx.fillStyle = 'rgba(255,255,255,0.75)';
   ctx.font = '14px "DM Sans", sans-serif';
   ctx.fillText(`${String(id).padStart(2, '0')} / 27`, canvas.width / 2, canvas.height - 46);
 
@@ -204,7 +204,7 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
         <Text
           position={[0, -0.72, 0.012]}
           fontSize={0.13}
-          color="#B8AA9A"
+          color="#1E3A8A"
           anchorX="center"
           anchorY="middle"
         >
