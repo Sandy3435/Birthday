@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Text, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
@@ -20,6 +20,61 @@ interface Props {
   position: [number, number, number];
 }
 
+function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 683;
+  const ctx = canvas.getContext('2d')!;
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = '#1E3A8A';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(18, 18, canvas.width - 36, canvas.height - 36);
+
+  // adaptive font
+  let fontSize = 22;
+  let lineHeight = 30;
+  const maxWidth = canvas.width - 80;
+  const wrap = (fs: number) => {
+    ctx.font = `italic ${fs}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
+    const ls: string[] = [];
+    let l = '';
+    for (const w of message.split(' ')) {
+      const test = l ? l + ' ' + w : w;
+      if (ctx.measureText(test).width > maxWidth && l) {
+        ls.push(l);
+        l = w;
+      } else {
+        l = test;
+      }
+    }
+    if (l) ls.push(l);
+    return ls;
+  };
+  let lines = wrap(fontSize);
+  while (lines.length > 14 && fontSize > 14) {
+    fontSize -= 2;
+    lineHeight -= 2;
+    lines = wrap(fontSize);
+  }
+  ctx.fillStyle = '#111111';
+  ctx.font = `italic ${fontSize}px "Cormorant Garamond", "Playfair Display", Georgia, serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const startY = Math.max(50, canvas.height / 2 - (lines.length * lineHeight) / 2 + 8);
+  lines.forEach((l, i) => {
+    ctx.fillText(l, canvas.width / 2, startY + i * lineHeight);
+  });
+
+  ctx.fillStyle = '#1E3A8A';
+  ctx.font = '13px "DM Sans", sans-serif';
+  ctx.fillText(`${String(id).padStart(2, '0')} / 27`, canvas.width / 2, canvas.height - 36);
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.needsUpdate = true;
+  return tex;
+}
+
 export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
   const mem = item;
   const cardRef = useRef<THREE.Group>(null);
@@ -33,6 +88,7 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
   const { camera } = useThree();
 
   const photoTex = useTexture(mem.image);
+  const backTex = useMemo(() => makeBackTexture(mem.message, mem.id), [mem.message, mem.id]);
 
   useEffect(() => {
     const img = photoTex.image as { width: number; height: number } | undefined;
@@ -146,37 +202,11 @@ export default function MemoryPhoto({ item, reducedMotion, position }: Props) {
           <planeGeometry args={[frameW, frameH]} />
           <meshStandardMaterial color="#1E3A8A" roughness={0.9} />
         </mesh>
-        {/* back background */}
-        <mesh position={[0, 0, -0.007]} rotation={[0, Math.PI, 0]} onClick={handleClick}>
+        {/* back photo/message */}
+        <mesh position={[0, 0, -0.006]} rotation={[0, Math.PI, 0]} onClick={handleClick}>
           <planeGeometry args={[photoW, photoH]} />
-          <meshStandardMaterial color="#FFFFFF" roughness={0.9} />
+          <meshBasicMaterial map={backTex} side={THREE.FrontSide} />
         </mesh>
-        {/* back message text */}
-        <Text
-          position={[0, 0, -0.006]}
-          rotation={[0, Math.PI, 0]}
-          fontSize={0.085}
-          color="#111111"
-          maxWidth={0.95}
-          textAlign="center"
-          anchorX="center"
-          anchorY="middle"
-          lineHeight={1.2}
-          onClick={handleClick}
-        >
-          {mem.message}
-        </Text>
-        <Text
-          position={[0, -0.72, -0.006]}
-          rotation={[0, Math.PI, 0]}
-          fontSize={0.09}
-          color="#1E3A8A"
-          anchorX="center"
-          anchorY="middle"
-          onClick={handleClick}
-        >
-          {`${String(mem.id).padStart(2, '0')} / 27`}
-        </Text>
 
         {/* front frame */}
         <mesh position={[0, 0, -0.002]}>
