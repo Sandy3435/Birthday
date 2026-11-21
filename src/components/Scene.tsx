@@ -26,12 +26,13 @@ function ScrollRig({ reducedMotion }: { reducedMotion: boolean }) {
   useFrame(() => {
     const o = scroll;
     const aspect = (camera as THREE.PerspectiveCamera).aspect || 1;
-    const baseZ = aspect < 1 ? 8.8 : 6.5;
+    const narrow = aspect < 1;
+    const baseZ = narrow ? 11 : 6.5;
     const startY = CAMERA_START_Y;
     const endY = CAMERA_END_Y;
     const baseY = startY + (endY - startY) * o;
     camera.position.y = reducedMotion ? baseY : baseY + Math.sin(o * Math.PI) * 0.15;
-    camera.position.z = baseZ - o * 2.4;
+    camera.position.z = baseZ - o * (narrow ? 1.8 : 2.4);
     camera.position.x = reducedMotion ? 0 : Math.sin(o * Math.PI * 1.2) * 0.25;
     camera.lookAt(0, camera.position.y - 1.6, 0);
   });

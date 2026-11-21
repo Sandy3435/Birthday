@@ -13,7 +13,7 @@ export default function App() {
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 1 }}>
         <Canvas
           style={{ width: '100%', height: '100%' }}
-          camera={{ position: [0, 8.5, (typeof window !== 'undefined' && window.innerWidth < 640) ? 8.8 : 6.5], fov: 50, near: 0.1, far: 100 }}
+          camera={{ position: [0, 8.5, (typeof window !== 'undefined' && window.innerWidth < 640) ? 11 : 6.5], fov: 50, near: 0.1, far: 100 }}
           gl={{ alpha: true, antialias: true }}
           dpr={[1, 1.5]}
           onCreated={({ gl, camera, set }) => {
