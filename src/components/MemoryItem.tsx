@@ -26,7 +26,7 @@ export default function MemoryItem({ index, reducedMotion }: Props) {
 
   const stringPoints = useMemo(() => {
     const pts: [number, number, number][] = [];
-    const start: [number, number, number] = [0, -0.46 * (item.balloonSize ?? 1), 0];
+    const start: [number, number, number] = [0, -0.52 * (item.balloonSize ?? 1), 0];
     const end = cardRel;
     const segments = 18;
     const sag = 0.18;

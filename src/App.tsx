@@ -12,7 +12,7 @@ export default function App() {
         <p>Twenty-seven little things, and probably a million more.</p>
       </div>
       <Canvas
-        camera={{ position: [0, 8.5, 6.5], fov: 50, near: 0.1, far: 100 }}
+        camera={{ position: [0, 8.5, (typeof window !== 'undefined' && window.innerWidth < 640) ? 8.8 : 6.5], fov: 50, near: 0.1, far: 100 }}
         gl={{ alpha: true, antialias: true }}
         dpr={[1, 1.5]}
         style={{ position: 'absolute', inset: 0, zIndex: 1 }}

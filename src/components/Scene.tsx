@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { useScroll } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
+import * as THREE from 'three';
 import MemoryItem from './MemoryItem';
 import { useStore } from '../store';
 import { appreciationItems } from '../data/appreciations';
@@ -15,11 +16,13 @@ function ScrollRig({ reducedMotion }: { reducedMotion: boolean }) {
   useFrame(() => {
     const o = scroll.offset;
     setScroll(o);
+    const aspect = (camera as THREE.PerspectiveCamera).aspect || 1;
+    const baseZ = aspect < 1 ? 8.8 : 6.5;
     const startY = CAMERA_START_Y;
     const endY = CAMERA_END_Y;
     const baseY = startY + (endY - startY) * o;
     camera.position.y = reducedMotion ? baseY : baseY + Math.sin(o * Math.PI) * 0.15;
-    camera.position.z = 6.5 - o * 2.2;
+    camera.position.z = baseZ - o * 2.4;
     camera.position.x = reducedMotion ? 0 : Math.sin(o * Math.PI * 1.2) * 0.25;
     camera.lookAt(0, camera.position.y - 1.6, 0);
   });
