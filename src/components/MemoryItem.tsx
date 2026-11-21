@@ -187,19 +187,21 @@ export default function MemoryItem({ index, reducedMotion }: Props) {
   });
 
   return (
-    <group
-      ref={groupRef}
-      position={balloonPos}
-      onPointerDown={handlePointerDown}
-      onClick={handleClick}
-    >
-      <Balloon size={item.balloonSize ?? 1} seed={seed} />
+    <group ref={groupRef} position={balloonPos}>
+      <Balloon
+        size={item.balloonSize ?? 1}
+        seed={seed}
+        onPointerDown={handlePointerDown}
+        onClick={handleClick}
+      />
       <BalloonString points={stringPoints} />
       <MemoryPhoto
         item={item}
         reducedMotion={reducedMotion}
         position={cardRel}
         flipped={flipped}
+        onPointerDown={handlePointerDown}
+        onClick={handleClick}
       />
     </group>
   );

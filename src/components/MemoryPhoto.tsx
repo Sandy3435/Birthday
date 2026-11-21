@@ -17,6 +17,8 @@ interface Props {
   reducedMotion: boolean;
   position: [number, number, number];
   flipped: boolean;
+  onPointerDown?: (e: any) => void;
+  onClick?: (e: any) => void;
 }
 
 /**
@@ -80,7 +82,7 @@ function makeBackTexture(message: string, id: number): THREE.CanvasTexture {
   return tex;
 }
 
-export default function MemoryPhoto({ item, reducedMotion, position, flipped }: Props) {
+export default function MemoryPhoto({ item, reducedMotion, position, flipped, onPointerDown, onClick }: Props) {
   const mem = item;
   const popRef = useRef<THREE.Group>(null);
   const cardRef = useRef<THREE.Group>(null);
@@ -145,19 +147,29 @@ export default function MemoryPhoto({ item, reducedMotion, position, flipped }: 
       <group ref={popRef}>
         <group ref={cardRef}>
           {/* BACK: royal-blue frame, behind the message after the flip */}
-          <mesh position={[0, 0, -0.005]} rotation={[0, Math.PI, 0]}>
+          <mesh
+            position={[0, 0, -0.005]}
+            rotation={[0, Math.PI, 0]}
+            onPointerDown={onPointerDown}
+            onClick={onClick}
+          >
             <planeGeometry args={[frameW, frameH]} />
             <meshBasicMaterial color="#1E3A8A" side={THREE.DoubleSide} />
           </mesh>
 
           {/* BACK: message texture, front-most once flipped */}
-          <mesh position={[0, 0, -0.01]} rotation={[0, Math.PI, 0]}>
+          <mesh
+            position={[0, 0, -0.01]}
+            rotation={[0, Math.PI, 0]}
+            onPointerDown={onPointerDown}
+            onClick={onClick}
+          >
             <planeGeometry args={[photoW, photoH]} />
             <meshBasicMaterial map={backTex} side={THREE.DoubleSide} />
           </mesh>
 
           {/* FRONT: white frame */}
-          <mesh position={[0, 0, 0.005]}>
+          <mesh position={[0, 0, 0.005]} onPointerDown={onPointerDown} onClick={onClick}>
             <planeGeometry args={[frameW, frameH]} />
             <meshBasicMaterial color="#FFFFFF" side={THREE.DoubleSide} />
           </mesh>
@@ -167,6 +179,8 @@ export default function MemoryPhoto({ item, reducedMotion, position, flipped }: 
             ref={photoMeshRef}
             position={[0, 0, 0.01]}
             rotation={[0, 0, upsideDown ? Math.PI : 0]}
+            onPointerDown={onPointerDown}
+            onClick={onClick}
           >
             <planeGeometry args={[photoW, photoH]} />
             <meshBasicMaterial map={photoTex} side={THREE.DoubleSide} />

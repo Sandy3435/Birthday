@@ -1,16 +1,24 @@
 interface Props {
   size?: number;
   seed?: number;
+  onPointerDown?: (e: any) => void;
+  onClick?: (e: any) => void;
 }
 
-export default function Balloon({ size = 1 }: Props) {
+export default function Balloon({ size = 1, onPointerDown, onClick }: Props) {
   const s = size;
   const knotScale = s;
 
   return (
     <group>
       {/* inflated body */}
-      <mesh castShadow receiveShadow scale={[0.92 * s, 1.08 * s, 0.92 * s]}>
+      <mesh
+        castShadow
+        receiveShadow
+        scale={[0.92 * s, 1.08 * s, 0.92 * s]}
+        onPointerDown={onPointerDown}
+        onClick={onClick}
+      >
         <sphereGeometry args={[0.46, 48, 48]} />
         <meshPhysicalMaterial
           color="#FFFFFF"
